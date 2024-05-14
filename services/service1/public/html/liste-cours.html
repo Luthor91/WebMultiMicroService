@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste Cours</title>
+    <style>
+        .filter-grid {
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 50%;
+            margin-left: 0;
+            margin-right: auto;
+        }
+        .filter-grid p {
+            margin: 0;
+            text-align: center;
+        }
+        .filter-grid input,
+        .filter-grid select {
+            width: 100%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste Cours</h1>
+    <div class="filter-grid">
+        <div>
+            <p>Filtrer par Mot-clé :</p>
+        </div>
+        <div>
+            <p>Filtrer par Niveau :</p>
+        </div>
+        <div>
+            <p>Filtrer par Places Disponibles :</p>
+        </div>
+        <div>
+            <p>Filtrer par Date d'Expiration :</p>
+        </div>
+        <div>
+            <input type="text" id="searchInput" placeholder="Rechercher...">
+        </div>
+        <div>
+            <select id="niveauFilter">
+                <option value="">Tous les niveaux</option>
+                <option value="Débutant">Débutant</option>
+                <option value="Intermédiaire">Intermédiaire</option>
+                <option value="Avancé">Avancé</option>
+            </select>
+        </div>
+        <div>
+            <input type="number" id="placeFilter" placeholder="Places Disponibles...">
+        </div>
+        <div>
+            <input type="date" id="expirationFilter">
+        </div>
+    </div>
+    <div id="cours-list">
+        {{range .}}
+        <div class="cours" data-identifiant="{{.Identifiant}}" data-titre="{{.Titre}}" data-resume="{{.Resume}}" data-niveau="{{.Niveau}}" data-places="{{.PlaceDisponible}}" data-expiration="{{.TempsExpiration}}">
+            <h2> {{.ID}} Identifiant : {{.Identifiant}} </h2>
+            <p> Titre : {{.Titre}} </p>
+            <p> Resume: {{.Resume}} </p>
+            <p> Niveau: {{.Niveau}} </p>
+            <p> Place Disponible: {{.PlaceDisponible}} </p>
+            <p> Temps Expiration: {{.TempsExpiration}} </p>
+        </div>
+        {{end}}
+    </div>
+    <!-- Boutons pour afficher les 10 cours suivants et précédents -->
+    <div>
+        <button id="prevBtn" onclick="showPrev()">Précédent</button>
+        <button id="nextBtn" onclick="showNext()">Suivant</button>
+    </div>
+    <br><a href="../../../index">Retour accueil</a>
+
+    <script>
+
+        let currentIndex = 0;
+        let allCours = document.querySelectorAll('.cours');
+        const coursPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const niveauFilter = document.getElementById('niveauFilter');
+            const placeFilter = document.getElementById('placeFilter');
+            const expirationFilter = document.getElementById('expirationFilter');
+            const coursList = document.getElementById('cours-list');
+        
+            searchInput.addEventListener('input', filterCours);
+            niveauFilter.addEventListener('change', filterCours);
+            placeFilter.addEventListener('input', filterCours);
+            expirationFilter.addEventListener('input', filterCours);
+        
+            showCours();
+
+            function filterCours() {
+                const searchValue = searchInput.value.toLowerCase();
+                const niveauValue = niveauFilter.value.toLowerCase();
+                const placeValue = placeFilter.value;
+                const expirationValue = expirationFilter.value;
+            
+                Array.from(coursList.children).forEach(function(cours) {
+                    const coursIdentifiant = (cours.dataset.identifiant || '').toLowerCase();
+                    const coursTitre = (cours.dataset.titre || '').toLowerCase();
+                    const coursResume = (cours.dataset.resume || '').toLowerCase();
+                    const coursNiveau = (cours.dataset.niveau || '').toLowerCase();
+                    const coursPlaces = parseInt(cours.dataset.places);
+                    const coursExpiration = cours.dataset.expiration || '';
+            
+                    const matchesSearch = searchValue === '' || coursIdentifiant.includes(searchValue) || coursTitre.includes(searchValue) || coursResume.includes(searchValue);
+                    const matchesNiveau = niveauValue === '' || coursNiveau === niveauValue;
+                    const matchesPlace = placeValue === '' || isNaN(placeValue) || coursPlaces >= parseInt(placeValue);
+                    const matchesExpiration = expirationValue === '' || new Date(coursExpiration) <= new Date(expirationValue);
+
+                    console.log(searchValue, cours.dataset.identifiant, coursTitre, coursResume);
+
+                    if (matchesSearch && matchesNiveau && matchesPlace && matchesExpiration) {
+                        cours.style.display = 'block';
+                    } else {
+                        cours.style.display = 'none';
+                    }
+                });
+            }
+
+        });
+
+        // Fonction pour afficher les 10 cours suivants
+        function showNext() {
+            currentIndex += coursPerPage;
+            if (currentIndex >= allCours.length) {
+                currentIndex = allCours.length - 1;
+            }
+            showCours();
+        }
+
+        // Fonction pour afficher les 10 cours précédents
+        function showPrev() {
+            currentIndex -= coursPerPage;
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            }
+            showCours();
+        }
+
+        // Fonction pour afficher les cours correspondants à l'index actuel
+        function showCours() {
+            allCours.forEach((cours, index) => {
+                if (index >= currentIndex && index < currentIndex + coursPerPage) {
+                    cours.style.display = 'block';
+                } else {
+                    cours.style.display = 'none';
+                }
+            });
+        }
+                
+    </script>
+</body>
+</html>

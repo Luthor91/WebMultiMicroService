@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un cours</title>
+</head>
+<body>
+    <h1>Modifier un cours</h1>
+    <form action="/cours/update" method="post">
+        <label for="coursId">Id du cours à modifier:</label><br>
+        <input type="number" id="coursId" name="coursId"><br>
+
+        <label for="titre">Titre du cours:</label><br>
+        <input type="text" id="titre" name="titre" required><br>
+
+        <label for="niveau">Niveau du cours:</label><br>
+        <select id="niveau" name="niveau" required>
+            <option value="Débutant">Débutant</option>
+            <option value="Intermédiaire">Intermédiaire</option>
+            <option value="Avancé">Avancé</option>
+        </select><br>
+
+        <label for="resume">Résumé du cours:</label><br>
+        <textarea id="resume" name="resume" rows="4" cols="50" required></textarea><br>
+
+        <label for="places">Nombre de places disponibles:</label><br>
+        <input type="number" id="places" name="places" required><br>
+
+        <label for="expiration">Temps d'expiration (en heures):</label><br>
+        <input type="number" id="expiration" name="expiration" required><br>
+
+        <input type="submit" value="Modifier">
+    </form>
+    <br><a href="../../../index">Retour accueil</a>
+</body>
+</html>

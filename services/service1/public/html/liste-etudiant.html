@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste Etudiant</title>
+    <style>
+        .filter-grid {
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 50%;
+            margin-left: 0;
+            margin-right: auto;
+        }
+        .filter-grid p {
+            margin: 0;
+            text-align: center;
+        }
+        .filter-grid input,
+        .filter-grid select {
+            width: 100%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste Etudiant</h1>
+    <div class="filter-grid">
+        <div>
+            <p>Filtrer par Identifiant :</p>
+        </div>
+        <div>
+            <p>Filtrer par Nom :</p>
+        </div>
+        <div>
+            <input type="text" id="idInput" placeholder="Rechercher identifiant...">
+        </div>
+        <div>
+            <input type="text" id="nameInput" placeholder="Rechercher nom...">
+        </div>
+    </div>
+    <div id="utilisateur-list">
+        {{range .}}
+        <div class="utilisateur" data-identifiant="{{.Identifiant}}" data-nom="{{.Nom}}">
+        
+            <h2> {{.ID}} Identifiant : {{.Identifiant}} </h2>
+            <p> Nom : {{.Nom}} </p>
+            <p> Cours : </p>
+            <div id="cours-list">
+                <ul>
+                    {{range .Cours}}
+                        <li>
+                            <p> Cours {{.Titre}} pour {{.Niveau}} </p>
+                            <p> Resume: {{.Resume}} </p>
+                        </li>
+                    {{end}}
+                </ul>
+            </div>
+        </div>
+        {{end}}
+    </div>
+    <!-- Boutons pour afficher les 10 cours suivants et précédents -->
+    <div>
+        <button id="prevBtn" onclick="showPrev()">Précédent</button>
+        <button id="nextBtn" onclick="showNext()">Suivant</button>
+    </div>
+    <br><a href="../../../index">Retour accueil</a>
+    
+    <script>
+
+        let currentIndex = 0;
+        let allUsers = document.querySelectorAll('.utilisateur');
+        const userPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const idInput = document.getElementById('idInput');
+            const nameInput = document.getElementById('nameInput');
+            const userList = document.getElementById('utilisateur-list');
+        
+            idInput.addEventListener('input', filterUser);
+            nameInput.addEventListener('input', filterUser);
+        
+            function filterUser() {
+                const idValue = idInput.value.toLowerCase();
+                const nameValue = nameInput.value.toLowerCase();
+            
+                Array.from(userList.children).forEach(function(user) {
+                    const userIdentifiant = (user.dataset.identifiant || '').toLowerCase();
+                    const userName = (user.dataset.nom || '').toLowerCase();
+            
+                    const matchesId = idValue === '' || userIdentifiant === idValue;
+                    const matchesName = nameValue === '' || userName === nameValue;
+
+                    if (matchesId && matchesName) {
+                        user.style.display = 'block';
+                    } else {
+                        user.style.display = 'none';
+                    }
+                });
+            }
+
+            showUser();
+        });
+
+        // Fonction pour afficher les 10 users suivants
+        function showNext() {
+            currentIndex += coursPerPage;
+            if (currentIndex >= allUsers.length) {
+                currentIndex = allUsers.length - 1;
+            }
+            showCours();
+        }
+
+        // Fonction pour afficher les 10 users précédents
+        function showPrev() {
+            currentIndex -= userPerPage;
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            }
+            showUser();
+        }
+
+        // Fonction pour afficher les users correspondants à l'index actuel
+        function showUser() {
+            allUsers.forEach((utilisateur, index) => {
+                if (index >= currentIndex && index < currentIndex + userPerPage) {
+                    utilisateur.style.display = 'block';
+                } else {
+                    utilisateur.style.display = 'none';
+                }
+            });
+        }
+                
+    </script>
+</body>
+</html>

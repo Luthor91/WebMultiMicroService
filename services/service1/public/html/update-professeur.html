@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un professeur</title>
+</head>
+<body>
+    <h1>Modifier un professeur</h1>
+    <form action="/professeur/update" method="post">
+        <label for="professeurId">Id du professeur à modifier:</label><br>
+        <input type="number" id="professeurId" name="professeurId"><br>
+
+        <label for="nom">Nom du professeur:</label><br>
+        <input type="text" id="nom" name="nom" required><br>
+
+        <input type="submit" value="Modifier">
+    </form>
+    <br><a href="../../../index">Retour accueil</a>
+</body>
+</html>

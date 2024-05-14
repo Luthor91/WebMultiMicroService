@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisateur</title>
+</head>
+<body>
+    <h1>Utilisateur</h1>
+    <div class="utilisateur">
+        <h2> Identifiant : {{.Identifiant}} </h2>
+        <p> Nom : {{.Nom}} </p>
+        <p> Cours : </p>
+        <div id="cours-list">
+            <ul>
+                {{range .Cours}}
+                    <li>
+                        <p> Identifiant : {{.Identifiant}} </p>
+                        <p> Titre : {{.Titre}} </p>
+                        <p> Resume: {{.Resume}} </p>
+                        <p> Niveau: {{.Niveau}} </p>
+                        <p> Place Disponible: {{.PlaceDisponible}} </p>
+                        <p> Temps Expiration: {{.TempsExpiration}} </p>
+                    </li>
+                {{end}}
+            </ul>
+        </div>
+    </div>
+    <br><a href="../../../index">Retour accueil</a>
+</body>
+</html>

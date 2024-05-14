@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professeur</title>
+</head>
+<body>
+    <h1>Professeur {{.ID}}</h1>
+    <div class="utilisateur">   
+        <h2> Identifiant : {{.Identifiant}} </h2>
+        <p> Nom : {{.Nom}} </p>
+        <p> Cours : </p>
+        <div id="cours-list">
+            <ul>
+                {{range .Cours}}
+                    <li>
+                        <h3> {{.ID}} Identifiant : {{.Identifiant}} </h3>
+                        <p> Cours {{.Titre}} pour {{.Niveau}} </p>
+                        <p> Resume: {{.Resume}} </p>
+                    </li>
+                {{end}}
+            </ul>
+        </div>
+    </div>
+    <br><a href="../../../index">Retour accueil</a>
+</body>
+</html>

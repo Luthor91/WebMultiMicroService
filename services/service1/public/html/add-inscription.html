@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription à un cours</title>
+</head>
+<body>
+    <h1>Inscription à un cours</h1>
+    <form action="/inscription/insert" method="post">
+        <label for="etudiantId">Id de l'étudiant :</label><br>
+        <input type="text" id="etudiantId" name="etudiantId" required><br>
+
+        <label for="coursId">Id du cours :</label><br>
+        <input type="text" id="coursId" name="coursId" required><br>
+
+        <input type="submit" value="Inscrire">
+    </form>
+    <br><a href="../../../index">Retour accueil</a>
+</body>
+</html>
